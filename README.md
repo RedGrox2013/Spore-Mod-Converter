@@ -8,3 +8,4 @@ How to use:
 1. Select the package file (Browse button)
 2. Click Convert
 3. Go to the Converted packages folder (Open output folder button) - your converted file will be there
+4. Transfer the converted file to `<prototype path>/Data`
