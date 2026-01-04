@@ -28,7 +28,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
-            
+
             <TextBox ToolTip="Package file path"
                      VerticalContentAlignment="Center"
                      Margin="0 0 3 0"
@@ -37,6 +37,16 @@
             <Button Grid.Column="1" IsEnabled="{Binding Enable}" Command="{Binding BrowseFileCommand}">Browse</Button>
         </Grid>
 
+        <DockPanel Grid.Row="2" HorizontalAlignment="Left" Margin="10"  VerticalAlignment="Center" LastChildFill="False">
+            <Image Source="/Images/tg-icon.png" Height="30" Width="30" />
+            <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left">
+                <Hyperlink NavigateUri="https://t.me/SporeRedGroxMods"
+                           Command="{Binding OpenLinkCommand}"
+                           CommandParameter="{Binding NavigateUri, RelativeSource={RelativeSource Self}}">
+                    t.me/SporeRedGroxMods
+                </Hyperlink>
+            </TextBlock>
+        </DockPanel>
         <DockPanel Grid.Row="2" Height="50" HorizontalAlignment="Right" IsEnabled="{Binding Enable}" LastChildFill="False">
             <Button DockPanel.Dock="Left" Margin="5" Background="GreenYellow" Command="{Binding ConvertCommand}">Convert</Button>
             <Button DockPanel.Dock="Right" Margin="5" Command="{Binding OpenOutputDirectoryCommand}">Open output folder</Button>

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows.Input;
 using System.IO;
 using System;
@@ -38,12 +39,14 @@ namespace Spore_Mod_Converter
         public ICommand ConvertCommand { get; private set; }
         public ICommand OpenOutputDirectoryCommand { get; private set; }
         public ICommand BrowseFileCommand { get; private set; }
+        public ICommand OpenLinkCommand { get; private set; }
 
         public MainWindowViewModel()
         {
             ConvertCommand = new RelayCommand(Convert);
             OpenOutputDirectoryCommand = new RelayCommand(OpenOutputDirectory);
             BrowseFileCommand = new RelayCommand(Browse);
+            OpenLinkCommand = new RelayCommand(OpenLink);
         }
 
         private static void CheckOutput()
@@ -62,8 +65,8 @@ namespace Spore_Mod_Converter
                 string path = PackagePath.Trim('"');
                 string outPath = Path.Combine(OUTPUT_DIRECTORY, Path.GetFileName(path));
 
-                PackageConverter converter = new PackageConverter(path);
-                await converter.ToPrototype2008PackageAsync(outPath);
+                using (PackageConverter converter = new PackageConverter(path))
+                    await converter.ToPrototype2008PackageAsync(outPath);
 
                 MessageBox.Show($"Converted file:\n\"{outPath}\"", "Successful", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -80,7 +83,7 @@ namespace Spore_Mod_Converter
         private void OpenOutputDirectory(object parameter)
         {
             CheckOutput();
-            System.Diagnostics.Process.Start("explorer", OUTPUT_DIRECTORY);
+            Process.Start("explorer", OUTPUT_DIRECTORY);
         }
 
         private void Browse(object parameter)
@@ -91,6 +94,17 @@ namespace Spore_Mod_Converter
             };
             if (dialog.ShowDialog() == true)
                 PackagePath = dialog.FileName;
+        }
+
+        private void OpenLink(object link)
+        {
+            string url = link?.ToString();
+            if (!string.IsNullOrEmpty(url))
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                });
         }
     }
 }
